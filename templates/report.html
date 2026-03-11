@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Use a modern CSS framework for a better UI -->
+    <link href="https://cdn.jsdelivr.net" rel="stylesheet">
+</head>
+<body class="container mt-5">
+    <h1 class="mb-4">{{ title }}</h1>
+
+    {% for title, table_html in tables.items() %}
+        <div class="card mb-5 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h3 class="card-title h5 mb-0">{{ title }}</h3>
+            </div>
+            <div class="card-body p-0">
+                <!-- table_html contains the <table> tag from df.to_html() -->
+                {{ table_html|safe }}
+            </div>
+        </div>
+    {% endfor %}
+</body>
+</html>
