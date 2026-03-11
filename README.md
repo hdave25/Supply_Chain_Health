@@ -21,3 +21,26 @@ insights and analytics ready, aggregated data for visualization.
 
 ## Instructions to run:
 
+Build and run the docker image using Dockerfile given in the root folder of 
+this repository.
+
+```
+docker build -t supply_chain_project .
+```
+
+```
+docker run -p 8000:8000 supply_chain_project
+```
+
+Once FastAPI server starts, go to http://127.0.0.1:8000/
+If you see message like this "Welcome to Supply Chain Health Application", you are all set !!!
+
+Read ```/docs/api_usage.md``` file to explore APIs & to get insights 
+from supply chain data!
+
+Read more about the project steps & implementation details in ```/docs``` folder.
+
+Couple of visualization plots are also created in a jupyter notebook 
+(```/code/notebook/insights```):
+* Vendor reliability ranking
+* Materials with highest stock‑risk frequency

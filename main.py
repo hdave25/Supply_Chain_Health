@@ -9,10 +9,35 @@ app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
 
-@app.get('/')
+@app.get('/', response_class=HTMLResponse)
 def root():
-    return ("Welcome to Supply Chain Health Application. "
-            "\nGo to /docs/api_usage.md to explore more!!!")
+    return """
+    
+        <html>
+        <head>
+            <style>
+                body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; 
+                       display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #fdfdfd; }
+                .container { text-align: center; border: 1px solid #eaeaea; padding: 40px; border-radius: 8px; background: white; }
+                h1 { color: #333; margin-bottom: 10px; }
+                p { color: #666; margin-bottom: 20px; }
+                .btn { text-decoration: none; background: #007bff; color: white; padding: 10px 20px; border-radius: 5px; font-weight: 500; }
+                .btn:hover { background: #0056b3; }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>📦 Welcome to Supply Chain Health App 📦</h1>
+                <p>
+                    Go to /docs/api_usage.md to explore more!!!
+                    <br> Or read about API Usage in the repository.
+                </p>
+                <a href="https://github.com/hdave25/Supply_Chain_Health/blob/main/docs/api_usage.md" class="btn" target="_blank">Explore API Docs</a>
+            </div>
+        </body>
+    </html>
+    
+    """
 
 
 @app.get("/data_processed/cleaned_inventory_snapshots.csv")
