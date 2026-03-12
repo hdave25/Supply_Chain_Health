@@ -74,13 +74,6 @@ def preprocess_shipments_data(df_shipments):
 def preprocess_inventory_snapshots_data(df_inventory):
     df_inventory = df_inventory.copy()
 
-    # Convert to datetime format
-    # df_inventory['snapshot_date'] = pd.to_datetime(
-    #     df_inventory['snapshot_date'],
-    #     format='mixed',
-    #     dayfirst=True
-    # )
-
     # Create flag based on null values before filling them
     df_inventory['is_current_stock_given'] = df_inventory[
         'current_stock'
