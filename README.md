@@ -23,7 +23,7 @@ insights and analytics ready, aggregated data for visualization.
 
 ### Here is the architecture diagram of the project:
 
-![Project Architecture_Diagram](static/arch_diagram.PNG)
+![Project Architecture_Diagram](static/arch_diagram.png)
 
 ## Instructions to run:
 
@@ -50,4 +50,5 @@ Couple of visualization plots are also created in a jupyter notebook
 (```/code/notebook/insights```):
 * Vendor reliability ranking
 * Materials with highest stock‑risk frequency
+
 
