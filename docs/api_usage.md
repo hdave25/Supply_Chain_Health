@@ -23,7 +23,9 @@ Use below APIs to get preprocessed data in csv format.
 Use below APIs to explore analytics ready data and
 health of supply chain.
 
-```/vendor_performance?vendor_id=``` : This API returns structured supplier performance metrics.
+```/overall_vendor_performance``` : This API returns vendor performance data for all vendors.
+<br>```/overall_material_risk``` : This API returns overall material risk insights for all materials.
+<br>```/vendor_performance?vendor_id=``` : This API returns structured supplier performance metrics.
 <br>```/material_risk?material_id=``` : This API returns current inventory risk and health for a particular material.
 <br>```/health_summary``` : This API returns aggregated KPIs for dashboards.
 <br>```/supplier_performance_metrics``` : This API returns overall supplier performance metrics.
