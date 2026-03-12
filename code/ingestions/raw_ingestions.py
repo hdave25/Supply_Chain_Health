@@ -81,7 +81,7 @@ def ingest_raw_inventory_snapshots(cleaned_df_inventory):
     conn = sqlite3.connect("supply_chain.db")
 
     try:
-        # 2. Get the current MAX snapshot from the database
+        # Get the current MAX snapshot from the database
         query = f"SELECT MAX(snapshot_date) FROM {table_name}"
         # If table doesn't exist, this will trigger the except block or
         # return None
@@ -90,9 +90,8 @@ def ingest_raw_inventory_snapshots(cleaned_df_inventory):
         except:
             current_max_df = None
 
-        # 3. Decision Logic: Only insert if incoming is strictly newer
+        # Insert only if incoming is newer
         if current_max_df is None or incoming_snapshot > current_max_df:
-            # Add your tracking timestamp
             cleaned_df_inventory['insert_ts'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
             cleaned_df_inventory.to_sql(table_name, conn, if_exists='append', index=False)
