@@ -168,6 +168,50 @@ async def get_supplier_performance(request: Request):
         conn.close()
 
 
+@app.get("/overall_vendor_performance", response_class=HTMLResponse)
+async def get_overall_vendor_performance(request: Request):
+    conn = sqlite3.connect("supply_chain.db")
+    query = """
+
+        SELECT 
+            *
+        FROM aggregated_vendor_kpis
+        WHERE insert_ts = (
+            SELECT MAX(insert_ts) FROM aggregated_vendor_kpis
+        )
+        ORDER BY on_time_delivery_percentage DESC;
+
+    """
+
+    try:
+        print("Fetching data from source...")
+        df = pd.read_sql(query, conn)
+
+        if df.empty:
+            print("No data found to transfer.")
+            return
+
+        dfs = {
+            f"Overall Vendor KPIs": df,
+        }
+
+        html_tables = {
+            name: df.to_html(classes="table table-hover table-bordered",
+                             index=False)
+            for name, df in dfs.items()
+        }
+
+        return templates.TemplateResponse(
+            "report.html",
+            {"request": request, "tables": html_tables, "title": "Vendor Performance"}
+        )
+
+    except Exception as e:
+        print(f"Error during load: {e}")
+    finally:
+        conn.close()
+
+
 @app.get("/vendor_performance", response_class=HTMLResponse)
 async def get_vendor_performance(vendor_id: str, request: Request):
     conn = sqlite3.connect("supply_chain.db")
@@ -204,6 +248,50 @@ async def get_vendor_performance(vendor_id: str, request: Request):
         return templates.TemplateResponse(
             "report.html",
             {"request": request, "tables": html_tables, "title": "Vendor Performance"}
+        )
+
+    except Exception as e:
+        print(f"Error during load: {e}")
+    finally:
+        conn.close()
+
+
+@app.get("/overall_material_risk", response_class=HTMLResponse)
+async def get_overall_material_risk(request: Request):
+    conn = sqlite3.connect("supply_chain.db")
+    query = """
+
+        SELECT 
+            *
+        FROM material_inventory_risk
+        WHERE insert_ts = (
+            SELECT MAX(insert_ts) FROM material_inventory_risk
+        )
+        ORDER BY pct_time_below_safety DESC;
+
+    """
+
+    try:
+        print("Fetching data from source...")
+        df = pd.read_sql(query, conn)
+
+        if df.empty:
+            print("No data found to transfer.")
+            return
+
+        dfs = {
+            f"Overall Material Risk": df,
+        }
+
+        html_tables = {
+            name: df.to_html(classes="table table-hover table-bordered",
+                             index=False)
+            for name, df in dfs.items()
+        }
+
+        return templates.TemplateResponse(
+            "report.html",
+            {"request": request, "tables": html_tables, "title": "Material Risk"}
         )
 
     except Exception as e:
@@ -289,6 +377,20 @@ async def get_health_summary(request: Request):
 
     query_3 = """
 
+            SELECT 
+                vendor_id,
+                on_time_delivery_percentage
+            FROM aggregated_vendor_kpis
+            WHERE insert_ts = (
+                SELECT MAX(insert_ts) FROM aggregated_vendor_kpis
+            )
+            ORDER BY on_time_delivery_percentage ASC
+            LIMIT 5;
+
+        """
+
+    query_4 = """
+
         SELECT 
             delivery_status,
             COUNT(*) AS number_of_purchase_orders,
@@ -306,15 +408,17 @@ async def get_health_summary(request: Request):
         df_1 = pd.read_sql(query_1, conn)
         df_2 = pd.read_sql(query_2, conn)
         df_3 = pd.read_sql(query_3, conn)
+        df_4 = pd.read_sql(query_3, conn)
 
-        if df_1.empty and df_2.empty and df_3.empty:
+        if df_1.empty and df_2.empty and df_3.empty and df_4.empty:
             print("No data found to transfer.")
             return
 
         dfs = {
             "Material Inventory Health": df_1,
-            "Aggregated Vendor Performance": df_2,
-            "Supplier Performance Metrics": df_3
+            "High Performing Vendors": df_2,
+            "Low Performing Vendors": df_3,
+            "Supplier Performance Metrics": df_4
         }
 
         html_tables = {

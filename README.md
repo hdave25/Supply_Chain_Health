@@ -15,6 +15,12 @@ insights and analytics ready, aggregated data for visualization.
 7. API endpoints to access the aggregated data & cleaned raw data
 8. Visualization of supply chain health metrics
 
+### Future enhancements:
+
+1. Caching strategies for heavy queries
+2. LLM-integration for natural language to SQL conversion
+3. Stock-out prediction heuristic
+
 ### Here is the architecture diagram of the project:
 
 ![Project Architecture_Diagram](static/arch_diagram.png)
